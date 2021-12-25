@@ -3,10 +3,13 @@ from werkzeug.utils import secure_filename
 UPLOAD_FOLDER = "image"
 ALLOWED_EXTENSIONS = { 'png', 'jpg', 'jpeg'}
 
-app = Flask(_name_)
+app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 app = Flask(__name__)
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 @app.route("/image",methods=["POST"])
 def image_post():
     return render_template("image")
@@ -15,8 +18,8 @@ def image_post():
 @app.route("/upload",methods=["POST"])
 def upload_post():
     if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
+        flash('No file part')
+        return redirect(request.url)
         file = request.files['file']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
