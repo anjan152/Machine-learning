@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from werkzeug.utils import secure_filename
-UPLOAD_FOLDER = "image"
+UPLOAD_FOLDER = "./image"
 ALLOWED_EXTENSIONS = { 'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
@@ -10,12 +10,12 @@ app = Flask(__name__)
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-@app.route("/image",methods=["POST"])
+@app.route("/image",methods=["GET"])
 def image_post():
-    return render_template("image")
+    return render_template("image.html")
 
 
-@app.route("/upload",methods=["POST"])
+@app.route("/image",methods=["POST"])
 def upload_post():
     if 'file' not in request.files:
         flash('No file part')
