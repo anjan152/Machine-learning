@@ -15,8 +15,6 @@ def allowed_file(filename):
 @app.route("/",methods=["GET"])
 def image_post():
     return render_template("image.html")
-
-
 @app.route("/",methods=["POST"])
 def upload_post():
     if 'file' not in request.files:
