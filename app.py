@@ -1,6 +1,7 @@
 from flask import Flask, render_template,request,flash,redirect
 import os
 from werkzeug.utils import secure_filename
+from ml_model import classify_flower
 UPLOAD_FOLDER = "./image"
 ALLOWED_EXTENSIONS = { 'png', 'jpg', 'jpeg'}
 
@@ -26,9 +27,12 @@ def upload_post():
     if file.filename == '':
         flash('No selected file')
         return redirect(request.url)
+    flower = None
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return render_template("upload.html")
+        flower_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(flower_path)
+        flower = classify_flower(flower_path)
+    return render_template("image.html",flower = flower)
 
 
